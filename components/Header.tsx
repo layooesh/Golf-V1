@@ -1,13 +1,14 @@
-
 import React from 'react';
 
 interface HeaderProps {
-  clubName: string;
+  gameName: string;
+  location: string;
   date: string;
-  onClubNameChange: (name: string) => void;
+  onGameNameChange: (name: string) => void;
+  onLocationChange: (location: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ clubName, date, onClubNameChange }) => {
+const Header: React.FC<HeaderProps> = ({ gameName, location, date, onGameNameChange, onLocationChange }) => {
   return (
     <header className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg">
       <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
@@ -23,9 +24,16 @@ const Header: React.FC<HeaderProps> = ({ clubName, date, onClubNameChange }) => 
         <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
           <input
             type="text"
-            value={clubName}
-            onChange={(e) => onClubNameChange(e.target.value)}
-            placeholder="Golf Club Name"
+            value={gameName}
+            onChange={(e) => onGameNameChange(e.target.value)}
+            placeholder="Game Name"
+            className="w-full sm:w-auto px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-golf-green-500 transition"
+          />
+           <input
+            type="text"
+            value={location}
+            onChange={(e) => onLocationChange(e.target.value)}
+            placeholder="Location"
             className="w-full sm:w-auto px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-golf-green-500 transition"
           />
           <div className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-medium px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-md">
