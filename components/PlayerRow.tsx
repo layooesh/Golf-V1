@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { Player } from '../types';
@@ -50,7 +49,7 @@ const PlayerRow: React.FC<PlayerRowProps> = ({ player, index, onNameChange, onSc
   preview(drop(ref));
 
   return (
-    <tr ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
+    <tr ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }} className="group hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
       <td className="p-2 sm:p-3 whitespace-nowrap">
         <div className="flex items-center">
             <div ref={drag} className="cursor-move pr-2 text-gray-400 hover:text-gray-600">
@@ -73,20 +72,39 @@ const PlayerRow: React.FC<PlayerRowProps> = ({ player, index, onNameChange, onSc
             </button>
         </div>
       </td>
-      {player.scores.map((score, holeIndex) => (
-        <td key={holeIndex} className={holeIndex === 8 ? 'border-r-2 border-golf-green-200 dark:border-golf-green-800' : ''}>
-          <input
-            type="number"
-            min="1"
-            value={score ?? ''}
-            onChange={(e) => {
-                const value = e.target.value;
-                onScoreChange(player.id, holeIndex, value === '' ? null : parseInt(value, 10))
-            }}
-            className="w-full h-10 text-center bg-transparent focus:outline-none focus:bg-golf-green-50 dark:focus:bg-golf-green-900/50 rounded"
-          />
-        </td>
-      ))}
+      {player.scores.map((score, holeIndex) => {
+        const isHoleInOne = score === 1;
+        return (
+            <td 
+                key={holeIndex} 
+                className={`relative transition-colors ${
+                    holeIndex === 8 ? 'border-r-2 border-golf-green-200 dark:border-golf-green-800' : ''
+                } ${
+                    isHoleInOne ? 'bg-yellow-200/75 dark:bg-yellow-900/50' : ''
+                }`}
+            >
+                {isHoleInOne && (
+                    <span className="absolute top-1 right-1 text-yellow-500 dark:text-yellow-400" title="Hole in one!">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </span>
+                )}
+                <input
+                    type="number"
+                    min="1"
+                    value={score ?? ''}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        onScoreChange(player.id, holeIndex, value === '' ? null : parseInt(value, 10))
+                    }}
+                    className={`w-full h-10 text-center bg-transparent focus:outline-none focus:bg-golf-green-50 dark:focus:bg-golf-green-900/50 rounded ${
+                        isHoleInOne ? 'font-extrabold text-yellow-700 dark:text-yellow-200' : ''
+                    }`}
+                />
+            </td>
+        )
+      })}
       <td className="p-2 sm:p-3 text-center font-bold text-golf-green-800 dark:text-golf-green-300 bg-golf-green-50 dark:bg-golf-green-900/30 border-r-2 border-golf-green-200 dark:border-golf-green-800">{totals.out || '-'}</td>
       <td className="p-2 sm:p-3 text-center font-bold text-golf-green-800 dark:text-golf-green-300 bg-golf-green-50 dark:bg-golf-green-900/30 border-r-2 border-golf-green-200 dark:border-golf-green-800">{totals.in || '-'}</td>
       <td className="p-2 sm:p-3 text-center font-bold text-golf-green-800 dark:text-golf-green-300 bg-golf-green-50 dark:bg-golf-green-900/30">{totals.total || '-'}</td>
