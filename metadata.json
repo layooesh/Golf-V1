@@ -1,0 +1,5 @@
+{
+  "name": "Golf Score Free",
+  "description": "A simple, user-friendly golf scorecard application. Track scores for multiple players, save your game progress, and share your results. Perfect for a casual round of golf.",
+  "requestFramePermissions": []
+}
